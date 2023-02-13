@@ -1,0 +1,186 @@
+<template>
+    <header>
+        <p>Абульфатов Руслан P32312, Вариант: 336783</p>
+        <div class="logout_button_container">
+            <button class="logout_button" @click="goToLogin">Log out</button>
+        </div>
+    </header>
+    <div class="main">
+        <CheckForm class="form" ref="CheckForm"/>
+        <DynamicGraph class="graph" :allTableRows="allTableRows" :curR="curR" ref="DynamicGraph"/>
+        <ResultTable class="table" :allTableRows="allTableRows"/>
+    </div>
+</template>
+
+<script>
+import superagent from 'superagent';
+
+import CheckForm from "@/components/MainPage/MainPageComponents/CheckForm.vue"
+import ResultTable from "@/components/MainPage/MainPageComponents/ResultTable.vue";
+import DynamicGraph from "@/components/MainPage/MainPageComponents/DynamicGraph.vue";
+
+export default {
+    mounted() {
+        this.getAllResultsFromServer();
+    },
+    components: {
+        CheckForm, ResultTable, DynamicGraph
+    },
+    data() {
+        return {
+            tableRowsByR: [],
+            curR: null,
+            allTableRows: [],
+        }
+    },
+    methods: {
+        goToLogin: function () {
+            this.$router.push({name: 'login'});
+            localStorage.removeItem("token");
+        },
+        cleanTable: function () {
+            superagent.post("http://localhost:18200/deleteResults", {}, {
+                headers: {Authorization: "Bearer " + localStorage.token}
+            }).then(() => {
+                this.allTableRows = [];
+                this.tableRowsByR = [];
+            }).catch(res => {
+                if (res.response.status === 401) {
+                    this.$router.push({name: 'login'})
+                }
+            })
+        },
+        changeCurR: function (r) {
+            this.curR = Number(r);
+            this.tableRowsByR = [];
+            this.allTableRows.forEach(elem => {
+                if (elem.R === this.curR) {
+                    this.tableRowsByR.push(elem);
+                }
+            });
+            this.$refs.DynamicGraph.draw();
+        },
+        sendCheckRequest: async function (xs, y, rs) {
+            let error_message = '';
+            let isValid = true;
+
+            const someRIsNotValid = rs.some(r => {
+                return r <= 0;
+            });
+           
+            if (someRIsNotValid) {
+                    if (error_message !== "") error_message += ", ";
+                    error_message += "R ∈ [0.5, 5]";
+                    isValid = false;
+            }
+
+            if (!xs.length) {
+                if (error_message !== "") error_message += ", "
+                error_message += "Please choose X";
+                isValid = false;
+            }
+            if (y === '') {
+                if (error_message !== "") error_message += ", ";
+                error_message += "Please input Y";
+                isValid = false;
+            }
+            xs.forEach(x => {
+                if (Number(x) < -3 || Number(x) > 5) {
+                    if (error_message !== "") error_message += ", ";
+                    error_message += "X ∈ [-3; 5]";
+                    isValid = false;
+                }
+            })
+           
+            if (Number(y) <= -3 || Number(y) >= 5) {
+                if (error_message !== "") error_message += ", ";
+                error_message += "Y ∈ (-3, 5)";
+                isValid = false;
+            }
+            if (!isValid) {
+                this.$refs.CheckForm.showErrorMessage(error_message);
+                return;
+            }
+            this.$refs.CheckForm.hideErrorMessage();
+
+            try{
+                // const response = await superagent.post("http://localhost:18200/check", {
+                //     x: Number(x),
+                //     y: Number(y),
+                //     r: Number(this.curR),
+                //     timezone_offset: (new Date()).getTimezoneOffset(),
+                // },
+                // {
+                //     headers: {Authorization: "Bearer " + localStorage.token}
+                // });
+
+                //const responseData = response.data;
+
+                this.is_error_visible = false;
+                xs.forEach(x =>{
+                    rs.forEach(r => {
+                        const hitCheckEntry = {
+                        X: x,
+                        Y: y,
+                        R: r,
+                        result: true,// responseData.result,
+                        hit_check_date:  new Date().toLocaleString()// responseData.hit_check_date.slice(0, 10) + " " + responseData.hit_check_date.slice(11, 19)
+                    }
+                    this.tableRowsByR.push(hitCheckEntry);
+                    this.allTableRows.push(hitCheckEntry);
+                    });
+                   
+                });
+              
+
+                this.$refs.DynamicGraph.draw();
+            }
+            catch(e){
+                console.log(e)
+                // if (res.response.status === 401) {
+                //     this.$router.push({name: 'login'})
+                // }
+            }
+
+       
+
+        },
+        getAllResultsFromServer: function () {
+            superagent.get("http://localhost:18200/results",
+                {
+                    headers: {Authorization: "Bearer " + localStorage.token}
+                }).then(res => {
+                res.data.forEach(elem => {
+                    this.allTableRows.push({
+                        X: elem.x,
+                        Y: elem.y,
+                        R: elem.r,
+                        result: elem.result,
+                        hit_check_date: elem.hit_check_date.slice(0, 10) + " " + elem.hit_check_date.slice(11, 19)
+                    });
+                })
+                this.changeCurR(this.curR);
+            }).catch(res => {
+                if (res.response.status === 401) {
+                    this.$router.push({name: 'login'})
+                }
+            });
+        }
+    }
+}
+</script>
+
+<style>
+    .main{
+        display: flex;
+        gap: 50px;
+        flex-wrap: wrap;
+        padding: 50px;
+    }
+
+    @media screen and (max-width: 646px) {
+        .main{
+            flex-direction: column;
+        }
+    }
+</style>
