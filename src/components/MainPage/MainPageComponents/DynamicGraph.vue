@@ -1,6 +1,6 @@
 <template>
     <div class="svg-wrapper">
-        <canvas id="graph" width="415" height="415">
+        <canvas id="graph" width="415" height="415" @click="onClick">
             <img ref="curImg" :src="selectedUrl" alt="Task grpah" width="400" height="400"/>
         </canvas>
     </div>
@@ -120,6 +120,23 @@ export default {
         },
         draw(){
             drawGraph(this.$props.allTableRows, this.vueCanvas, this.$parent.$refs.CheckForm.maxR)
+        },
+        onClick(e){
+           const selectedRs = this.$parent.$refs.CheckForm.selectedRs;
+
+            if (selectedRs.length != 1) {
+                alert("Please select the only one value for R first");
+                return;
+            }
+
+            const r = selectedRs[0];
+            const xClicked =
+                Math.round(((2 * e.offsetX) / width - 1) * r * 1.5 * 100) / 100;
+            const yClicked =
+                Math.round(((-2 * e.offsetY) / height + 1) * r * 1.5 * 100) / 100;
+
+            
+            this.$parent.sendCheckRequest([xClicked], yClicked, [r]);
         }
     },
     mounted() {
