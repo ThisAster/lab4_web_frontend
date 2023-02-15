@@ -1,27 +1,32 @@
 <template>
     <div class="form_holder">
         <form class="check_form" @submit.prevent="submit">
-            <label>
+            <div>
+                <label>
                 X values:
-            </label>
-            <div class="multi-checkbox">
-                <label v-bind:key="x.id" v-for="x in x_values">
-                    <input type="checkbox" v-model="x.selected"> {{x.name}}
                 </label>
+                <div class="multi-checkbox">
+                    <label v-bind:key="x.id" v-for="x in x_values">
+                        <input type="checkbox" v-model="x.selected"> {{x.name}}
+                    </label>
+                </div>
             </div>
-           
-            <label>
-                Y value:
-            </label>
-            <input v-model="y_value" placeholder="Input y value" @input="inputYChanged">
-            <label>
-                R values:
-            </label>
-            <div class="multi-checkbox">
-                <label v-bind:key="r.id" v-for="r in r_values">
-                    <input type="checkbox" v-model="r.selected" @change="inputRChanged" on> {{r.name}}
+           <div>
+                <label>
+                    Y value:
                 </label>
-            </div>
+                <input v-model="y_value" placeholder="Input y value" @input="inputYChanged">
+           </div>
+           <div>
+                <label>
+                    R values:
+                </label>
+                <div class="multi-checkbox">
+                    <label v-bind:key="r.id" v-for="r in r_values">
+                        <input type="checkbox" v-model="r.selected" @change="inputRChanged" on> {{r.name}}
+                    </label>
+                </div>
+           </div>
             <button class="submit_button" type="submit">Submit</button>
         </form>
         <div class="error_message" :class="is_error_visible ? 'error_visible' : 'error_invisible'">
@@ -182,16 +187,14 @@ export default {
     width: 60%;
     margin-left: auto;
     margin-right: auto;
-
+    gap: 20px;
     padding: 20px;
 }
 
-input {
-    margin: 5%;
-}
-
-select {
-    margin: 5%;
+.check_form > div{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
 .submit_button {
@@ -215,7 +218,7 @@ select {
     background: #ffffff;
 
     position: absolute;
-    bottom: 70px;
+    bottom: 75px;
     left: 50%;
     transform: scale(0.9) translate(-50%);
     padding: 0 6px;

@@ -178,7 +178,8 @@ export default {
         padding: 50px;
     }
 
-    @media screen and (max-width: 646px) {
+
+    @media screen and (max-width: 980px) {
         .main{
             flex-direction: column;
         }
