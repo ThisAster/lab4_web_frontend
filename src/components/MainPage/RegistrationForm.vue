@@ -65,12 +65,13 @@ export default {
 </script>
 
 <style scoped>
-  .container{
+  .container {
     display: flex;
     justify-content: center;
     align-items: center;
   }
-  #form{
+
+  #form {
     display: flex;
     flex-direction: column;
     gap: 50px;
@@ -83,7 +84,7 @@ export default {
   }
 
 
-  .control{
+  .control {
     min-width: 380px;
     display: flex;
     gap: 10px;
@@ -91,7 +92,7 @@ export default {
     align-items: center;
   }
 
-  .submit{
+  .submit {
     min-width: 100px;
   }
 </style>
