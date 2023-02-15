@@ -2,20 +2,25 @@
   <div class="container">
     <form id="form" @submit.prevent>
         <div class="control">
-          <label>Логин: </label> 
+          <label>Логин </label> 
           <InputText v-model="username" placeholder="Введите логин"></InputText>
         </div>
 
         <div class="control">
-          <label>Пароль: </label> 
+          <label>Пароль </label> 
           <InputText v-model="password" type="password" placeholder="Введите пароль"></InputText>
         </div>
 
-        <div class="buttons">
-          <button @click="userFormSubmit" class="submit">Войти</button>
+        <div class="control">
+          <label>Подтвердите пароль </label> 
+          <InputText v-model="passwordAgain" type="password" placeholder="Введите пароль"></InputText>
         </div>
-        <div class="reg_link_holder">
-          <a href="#" @click="goToRegisterPage">Нет аккаунта?</a>
+
+        <div class="buttons">
+          <button @click="userFormSubmit" class="submit">Создать аккаунт</button>
+        </div>
+        <div class="login_link_holder">
+          <a href="#" @click="goToLoginPage">Уже есть аккаунт?</a>
         </div>
     </form>
   </div>
@@ -25,25 +30,35 @@
 import InputText from "@/components/UI/InputText.vue";
 
 export default {
-  name: "UserForm",
+  name: "RegistrationForm",
   components: {InputText},
   data() {
     return {
       username: '',
       password: '',
+      passwordAgain: ''
     }
   },
   methods: {
     userFormSubmit() {
-      const loginSucceded = this.username == 'admin' && this.password == 'admin';
-      if(loginSucceded){
-        this.$router.push('/check-point') 
-      }else{
-        alert('Неверный логин/пароль!')
+      if(!this.username){
+        alert('Введите логин!')
+        return;
       }
+      if(!this.password){
+        alert('Введите пароль!')
+        return
+      }
+      if(this.password != this.passwordAgain){
+        alert('Введен неверный пароль!')
+        return
+      }
+      
+      this.$router.push('/') 
+     
     },
-    goToRegisterPage(){
-      this.$router.push('/create-account')
+    goToLoginPage(){
+      this.$router.push('/')
     }
   }
 }
@@ -64,11 +79,14 @@ export default {
     padding: 50px;
     background-color: #f5f5f599;
     align-items: center;
-    max-width: 480px;
+    max-width: 580px;
   }
+
+
   .control{
-    width: 300px;
+    min-width: 380px;
     display: flex;
+    gap: 10px;
     justify-content: space-between;
     align-items: center;
   }
