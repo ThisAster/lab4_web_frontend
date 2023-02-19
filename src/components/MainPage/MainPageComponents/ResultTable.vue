@@ -21,6 +21,12 @@
     </div>
 </template>
 
+<script>
+export default {
+  props: ["allTableRows"]
+}
+</script>
+
 <style scoped>
 
 .result_table {
