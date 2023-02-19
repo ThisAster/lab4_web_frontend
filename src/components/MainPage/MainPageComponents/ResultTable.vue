@@ -9,11 +9,11 @@
                 <th>Process time</th>
                 <th>Result</th>
             </tr>
-            <tr v-for="row in allTableRows" :key="row.X">
+            <tr v-for="row in allTableRows" :key="row">
                 <td>{{ row.X }}</td>
                 <td>{{ row.Y }}</td>
                 <td>{{ row.R }}</td>
-                <td>{{ dynamicTimeChanger(new Date(parseInt(row.attemptTime).toLocaleString)) }}</td>
+                <td>{{ new Date(parseInt(row.attemptTime)).toLocaleString() }}</td>
                 <td>{{ (parseInt(row.processTime)/1000/1000).toFixed(2)  }} ms</td>
                 <td>{{ row.result }}</td>
             </tr>
@@ -22,19 +22,8 @@
 </template>
 
 <script>
-import moment from 'moment';
-
 export default {
   props: ["allTableRows"],
-  methods: {
-    dynamicTimeChanger(date) {
-        return moment(date)
-                .subtract(
-                moment(date).utcOffset(), 
-                'minutes')
-                .utc()
-    }
-  }
 }
 </script>
 
