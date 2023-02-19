@@ -28,6 +28,8 @@
 
 <script>
 import InputText from "@/components/UI/InputText.vue";
+import * as request from "superagent";
+import {api} from "@/api";
 
 export default {
   name: "RegistrationForm",
@@ -40,7 +42,7 @@ export default {
     }
   },
   methods: {
-    userFormSubmit() {
+    async userFormSubmit() {
       if(!this.username){
         alert('Введите логин!')
         return;
@@ -53,8 +55,30 @@ export default {
         alert('Введен неверный пароль!')
         return
       }
-      
-      this.$router.push('/') 
+
+      const formData = new FormData();
+      formData.set('username', this.username)
+      formData.set('password', this.password)
+
+      const onRegistrationFailed = () => {
+        alert('Пользователь существует')
+      }
+
+      try{
+        const authorizeResponse = await request.post(`${api}/registration`)
+            .send(formData);
+
+        if(authorizeResponse.statusCode == "200"){
+          this.$router.push('/')
+        }else{
+          onRegistrationFailed();
+        }
+      }
+      catch(e){
+        onRegistrationFailed();
+      }
+
+
      
     },
     goToLoginPage(){

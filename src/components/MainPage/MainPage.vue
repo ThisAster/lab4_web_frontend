@@ -18,6 +18,8 @@ import superagent from 'superagent';
 import CheckForm from "@/components/MainPage/MainPageComponents/CheckForm.vue"
 import ResultTable from "@/components/MainPage/MainPageComponents/ResultTable.vue";
 import DynamicGraph from "@/components/MainPage/MainPageComponents/DynamicGraph.vue";
+import * as request from "superagent";
+import {api} from "@/api";
 
 export default {
     mounted() {
@@ -117,22 +119,39 @@ export default {
                 //const responseData = response.data;
 
                 this.is_error_visible = false;
-                xs.forEach(x =>{
-                    rs.forEach(r => {
-                        const hitCheckEntry = {
-                        X: x,
-                        Y: y,
-                        R: r,
-                        result: true,// responseData.result,
-                        hit_check_date:  new Date().toLocaleString()// responseData.hit_check_date.slice(0, 10) + " " + responseData.hit_check_date.slice(11, 19)
-                    }
-                    this.tableRowsByR.push(hitCheckEntry);
-                    this.allTableRows.push(hitCheckEntry);
-                    });
-                   
-                });
-              
 
+                let lastAddPointPromise = null;
+
+                xs.forEach(x =>{
+                    rs.forEach(async (r) => {
+
+                      const formData = new FormData();
+                      formData.set('X', x)
+                      formData.set('Y', y)
+                      formData.set('R', r)
+                      formData.set('username', localStorage.getItem('username'))
+                      formData.set('password', localStorage.getItem('password'))
+
+                      try{
+                        lastAddPointPromise = request.post(`${api}/points/add`)
+                            .send(formData);
+                        const addPointResponse = await lastAddPointPromise;
+
+                        if(addPointResponse.statusCode == "200"){
+                          const [hitCheckEntry] = addPointResponse.body;
+                          this.tableRowsByR.push(hitCheckEntry);
+                          this.allTableRows.push(hitCheckEntry);
+                        }else{
+                          alert('error')
+                        }
+                      }
+                      catch(e){
+                        alert('error')
+                      }
+                    });
+                });
+
+                await lastAddPointPromise;
                 this.$refs.DynamicGraph.draw();
             }
             catch(e){

@@ -23,6 +23,8 @@
 
 <script>
 import InputText from "@/components/UI/InputText.vue";
+import * as request from 'superagent';
+import {api} from "@/api";
 
 export default {
   name: "UserForm",
@@ -34,13 +36,34 @@ export default {
     }
   },
   methods: {
-    userFormSubmit() {
-      const loginSucceded = this.username == 'admin' && this.password == 'admin';
-      if(loginSucceded){
-        this.$router.push('/check-point') 
-      }else{
+    async userFormSubmit() {
+
+      const formData = new FormData();
+      formData.set('username', this.username)
+      formData.set('password', this.password)
+
+      const onLoginFailed = () => {
         alert('Неверный логин/пароль!')
       }
+
+      try{
+        const authorizeResponse = await request.post(`${api}/authorize`)
+            .send(formData);
+
+        if(authorizeResponse.statusCode == "200"){
+
+          localStorage.setItem('username', this.username);
+          localStorage.setItem('password', this.password);
+
+          this.$router.push('/check-point')
+        }else{
+          onLoginFailed();
+        }
+      }
+      catch(e){
+        onLoginFailed();
+      }
+
     },
     goToRegisterPage(){
       this.$router.push('/create-account')
