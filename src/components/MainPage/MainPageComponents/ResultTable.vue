@@ -29,11 +29,11 @@ export default {
   methods: {
     getUtcOffset(date) {
         return moment(date)
-        .subtract(
-        moment(date).utcOffset(), 
-        'minutes')
-        .utc()
-}
+                .subtract(
+                moment(date).utcOffset(), 
+                'minutes')
+                .utc()
+    }
   }
 }
 </script>
