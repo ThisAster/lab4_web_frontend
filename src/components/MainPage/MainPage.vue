@@ -98,17 +98,6 @@ export default {
             this.$refs.CheckForm.hideErrorMessage();
 
             try{
-                // const response = await superagent.post("http://localhost:18200/check", {
-                //     x: Number(x),
-                //     y: Number(y),
-                //     r: Number(this.curR),
-                //     timezone_offset: (new Date()).getTimezoneOffset(),
-                // },
-                // {
-                //     headers: {Authorization: "Bearer " + localStorage.token}
-                // });
-
-                //const responseData = response.data;
 
                 this.is_error_visible = false;
 
@@ -148,13 +137,7 @@ export default {
             }
             catch(e){
                 console.log(e)
-                // if (res.response.status === 401) {
-                //     this.$router.push({name: 'login'})
-                // }
             }
-
-       
-
         },
         getAllResultsFromServer: async function () {
 

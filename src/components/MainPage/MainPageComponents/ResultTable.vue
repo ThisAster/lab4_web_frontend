@@ -21,17 +21,6 @@
     </div>
 </template>
 
-<script>
-export default {
-    props: ["allTableRows"],
-    methods: {
-        cleanTable: function () {
-            this.$parent.cleanTable();
-        },
-    }
-}
-</script>
-
 <style scoped>
 
 .result_table {
@@ -41,14 +30,6 @@ export default {
     background-color: #ffffff;
     border: 3px solid #ffd4d5;
     width: 100%;
-}
-
-.result_table .success{
-    color: green
-}
-
-.result_table .failed{
-    color: red
 }
 
 .table-wrapper {
