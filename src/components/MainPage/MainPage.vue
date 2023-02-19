@@ -30,7 +30,6 @@ export default {
     },
     data() {
         return {
-            tableRowsByR: [],
             curR: null,
             allTableRows: [],
         }
@@ -45,7 +44,6 @@ export default {
                 headers: {Authorization: "Bearer " + localStorage.token}
             }).then(() => {
                 this.allTableRows = [];
-                this.tableRowsByR = [];
             }).catch(res => {
                 if (res.response.status === 401) {
                     this.$router.push({name: 'login'})
@@ -54,12 +52,6 @@ export default {
         },
         changeCurR: function (r) {
             this.curR = Number(r);
-            this.tableRowsByR = [];
-            this.allTableRows.forEach(elem => {
-                if (elem.R === this.curR) {
-                    this.tableRowsByR.push(elem);
-                }
-            });
             this.$refs.DynamicGraph.draw();
         },
         sendCheckRequest: async function (xs, y, rs) {
@@ -139,7 +131,7 @@ export default {
 
                         if(addPointResponse.statusCode == "200"){
                           const [hitCheckEntry] = addPointResponse.body;
-                          this.tableRowsByR.push(hitCheckEntry);
+                          hitCheckEntry.result = hitCheckEntry.result == "true";
                           this.allTableRows.push(hitCheckEntry);
                         }else{
                           alert('error')
@@ -164,26 +156,29 @@ export default {
        
 
         },
-        getAllResultsFromServer: function () {
-            superagent.get("http://localhost:18200/results",
-                {
-                    headers: {Authorization: "Bearer " + localStorage.token}
-                }).then(res => {
-                res.data.forEach(elem => {
-                    this.allTableRows.push({
-                        X: elem.x,
-                        Y: elem.y,
-                        R: elem.r,
-                        result: elem.result,
-                        hit_check_date: elem.hit_check_date.slice(0, 10) + " " + elem.hit_check_date.slice(11, 19)
-                    });
+        getAllResultsFromServer: async function () {
+
+            const formData = new FormData();
+            formData.set('username', localStorage.getItem('username'))
+            formData.set('password', localStorage.getItem('password'))
+
+            try{
+                const getPointsResponse = await request.post(`${api}/points/get`)
+                .send(formData);
+
+                const points = getPointsResponse.body;
+
+                points.forEach(attempt => {
+                    attempt.result = attempt.result == "true";
+                    this.allTableRows.push(attempt);
                 })
                 this.changeCurR(this.curR);
-            }).catch(res => {
-                if (res.response.status === 401) {
-                    this.$router.push({name: 'login'})
-                }
-            });
+                this.$refs.DynamicGraph.draw();
+            }
+            catch(e){
+                console.log(e)
+            }
+         
         }
     }
 }

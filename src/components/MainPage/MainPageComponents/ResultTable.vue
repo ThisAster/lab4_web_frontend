@@ -1,19 +1,20 @@
 <template>
     <div class="table-wrapper">
-        <button class="reset_table_button" @click="cleanTable()">Reset</button>
         <table class="result_table">
             <tr>
                 <th>X</th>
                 <th>Y</th>
                 <th>R</th>
-                <th>Время</th>
-                <th>Результат</th>
+                <th>Attempt time</th>
+                <th>Process time</th>
+                <th>Result</th>
             </tr>
             <tr v-for="row in allTableRows" :key="row.X">
                 <td>{{ row.X }}</td>
                 <td>{{ row.Y }}</td>
                 <td>{{ row.R }}</td>
-                <td>{{ row.hit_check_date }}</td>
+                <td>{{ new Date(parseInt(row.attemptTime)).toLocaleString() }}</td>
+                <td>{{ (parseInt(row.processTime)/1000/1000).toFixed(2)  }} ms</td>
                 <td>{{ row.result }}</td>
             </tr>
         </table>
@@ -39,8 +40,15 @@ export default {
     border-radius: 20px 20px 20px 20px;
     background-color: #ffffff;
     border: 3px solid #ffd4d5;
-    margin: 2% auto auto;
     width: 100%;
+}
+
+.result_table .success{
+    color: green
+}
+
+.result_table .failed{
+    color: red
 }
 
 .table-wrapper {
