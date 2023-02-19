@@ -13,7 +13,7 @@
                 <td>{{ row.X }}</td>
                 <td>{{ row.Y }}</td>
                 <td>{{ row.R }}</td>
-                <td>{{ getUtcOffset(new Date(parseInt(row.attemptTime).toLocaleString)) }}</td>
+                <td>{{ timeChanger(new Date(parseInt(row.attemptTime).toLocaleString)) }}</td>
                 <td>{{ (parseInt(row.processTime)/1000/1000).toFixed(2)  }} ms</td>
                 <td>{{ row.result }}</td>
             </tr>
@@ -27,7 +27,7 @@ import moment from 'moment';
 export default {
   props: ["allTableRows"],
   methods: {
-    getUtcOffset(date) {
+    timeChanger(date) {
         return moment(date)
                 .subtract(
                 moment(date).utcOffset(), 
