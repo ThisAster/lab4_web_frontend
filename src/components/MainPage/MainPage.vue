@@ -13,7 +13,6 @@
 </template>
 
 <script>
-import superagent from 'superagent';
 
 import CheckForm from "@/components/MainPage/MainPageComponents/CheckForm.vue"
 import ResultTable from "@/components/MainPage/MainPageComponents/ResultTable.vue";
@@ -38,17 +37,6 @@ export default {
         goToLogin: function () {
             this.$router.push({name: 'login'});
             localStorage.removeItem("token");
-        },
-        cleanTable: function () {
-            superagent.post("http://localhost:18200/deleteResults", {}, {
-                headers: {Authorization: "Bearer " + localStorage.token}
-            }).then(() => {
-                this.allTableRows = [];
-            }).catch(res => {
-                if (res.response.status === 401) {
-                    this.$router.push({name: 'login'})
-                }
-            })
         },
         changeCurR: function (r) {
             this.curR = Number(r);
@@ -113,17 +101,17 @@ export default {
                       formData.set('username', localStorage.getItem('username'))
                       formData.set('password', localStorage.getItem('password'))
 
-                      try{
+                      try {
                         lastAddPointPromise = request.post(`${api}/points/add`)
                             .send(formData);
                         const addPointResponse = await lastAddPointPromise;
 
-                        if(addPointResponse.statusCode == "200"){
+                        if (addPointResponse.statusCode == "200") {
                           const [hitCheckEntry] = addPointResponse.body;
                           hitCheckEntry.result = hitCheckEntry.result == "true";
                           this.allTableRows.push(hitCheckEntry);
-                        }else{
-                          alert('error')
+                        } else {
+                            alert('error')
                         }
                       }
                       catch(e){
@@ -135,7 +123,7 @@ export default {
                 await lastAddPointPromise;
                 this.$refs.DynamicGraph.draw();
             }
-            catch(e){
+            catch(e) {
                 console.log(e)
             }
         },
