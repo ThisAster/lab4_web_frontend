@@ -5,6 +5,7 @@ import {createRouter, createWebHistory} from "vue-router";
 import MainPage from "@/components/MainPage/MainPage.vue"
 import UserForm from "@/components/MainPage/UserForm.vue"
 import RegistrationForm from "@/components/MainPage/RegistrationForm.vue"
+
 const app = createApp({});
 
 

@@ -39,8 +39,7 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style scoped >
 .result_table {
     text-align: center;
     justify-content: center;
@@ -66,3 +65,7 @@ td, th{
     padding: 10px;
 }
 </style>
+
+<!-- <style lang="scss">
+    
+</style> -->
