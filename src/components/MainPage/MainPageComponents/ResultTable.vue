@@ -18,7 +18,10 @@
                 <td>{{ row.result }}</td>
             </tr>
         </table>
-        <button @click="loadMore" :disabled="allAttemptsLoaded">Load More</button>
+        <div>
+            <button @click="reset">Reset</button>
+            <button @click="loadMore" :disabled="allAttemptsLoaded">Load More</button>
+        </div>
     </div>
 </template>
 
@@ -28,6 +31,9 @@ export default {
   methods: {
     loadMore(){
         this.$parent.getResultsFromServer()
+    },
+    reset(){
+        this.$parent.reset()
     }
   }
 }

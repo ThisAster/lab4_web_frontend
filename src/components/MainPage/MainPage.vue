@@ -156,6 +156,25 @@ export default {
                 console.log(e)
             }
          
+        },
+        reset: async function () {
+            if(confirm("Delete all attempts?")){
+                const formData = new FormData();
+                formData.set('username', localStorage.getItem('username'))
+                formData.set('password', localStorage.getItem('password'))
+                try{
+                    await request.post(`${api}/points/clear`)
+                    .send(formData);
+
+                    this.allTableRows.length = 0;
+                                
+                    this.$refs.DynamicGraph.draw();
+                }
+                catch(e){
+                    console.log(e)
+                }
+            }
+            
         }
     }
 }
