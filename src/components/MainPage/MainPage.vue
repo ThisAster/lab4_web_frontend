@@ -59,14 +59,21 @@ export default {
 
             if (!xs.length) {
                 if (error_message !== "") error_message += ", "
-                error_message += "Please choose X";
+                error_message += "Choose X";
                 isValid = false;
             }
             if (y === '') {
                 if (error_message !== "") error_message += ", ";
-                error_message += "Please input Y";
+                error_message += "Input Y";
                 isValid = false;
             }
+
+            if (!rs.length) {
+                if (error_message != "") error_message += ", "
+                error_message += "Choose R"
+                isValid = false;
+            }
+
             xs.forEach(x => {
                 if (Number(x) < -3 || Number(x) > 5) {
                     if (error_message !== "") error_message += ", ";
