@@ -30,13 +30,13 @@ function drawGraph(attempts, ctx, maxR) {
 
     // 2nd quadrant sector
     ctx.beginPath();
-    ctx.arc(width / 2, height / 2, width / 6, Math.PI, Math.PI*3/2, false);
+    ctx.arc(width / 2, height / 2, width / 3, -3.14, Math.PI / 2, true);
     ctx.lineTo(width / 2, height / 2);
     ctx.fill();
 
     // 4th quadrant rectangle
     ctx.beginPath();
-    ctx.moveTo(width/2, 5*height/7.5);
+    ctx.moveTo(width/2, 5*height/6);
     ctx.lineTo(2*4*width/9.6, height/2);
     ctx.lineTo(width/2, height/2);
     ctx.fill();
