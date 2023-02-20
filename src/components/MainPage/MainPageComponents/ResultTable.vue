@@ -18,12 +18,18 @@
                 <td>{{ row.result }}</td>
             </tr>
         </table>
+        <button @click="loadMore" :disabled="allAttemptsLoaded">Load More</button>
     </div>
 </template>
 
 <script>
 export default {
-  props: ["allTableRows"],
+  props: ["allTableRows", "allAttemptsLoaded"],
+  methods: {
+    loadMore(){
+        this.$parent.getResultsFromServer()
+    }
+  }
 }
 </script>
 
@@ -36,6 +42,7 @@ export default {
     background-color: #ffffff;
     border: 3px solid #ffd4d5;
     width: 100%;
+    min-width: 560px;
 }
 
 .table-wrapper {
@@ -43,6 +50,10 @@ export default {
     margin-right: auto;
     text-align: center;
     margin-top: 0;
+}
+
+.table-wrapper button{
+    margin: 10px;
 }
 
 td, th{

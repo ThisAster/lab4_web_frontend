@@ -8,7 +8,7 @@
     <div class="main">
         <CheckForm class="form" ref="CheckForm"/>
         <DynamicGraph class="graph" :allTableRows="allTableRows" :curR="curR" ref="DynamicGraph"/>
-        <ResultTable class="table" :allTableRows="allTableRows"/>
+        <ResultTable class="table" :allTableRows="allTableRows" :allAttemptsLoaded="allAttemptsLoaded"/>
     </div>
 </template>
 
@@ -22,7 +22,7 @@ import {api} from "@/api";
 
 export default {
     mounted() {
-        this.getAllResultsFromServer();
+        this.getResultsFromServer();
     },
     components: {
         CheckForm, ResultTable, DynamicGraph
@@ -31,6 +31,7 @@ export default {
         return {
             curR: null,
             allTableRows: [],
+            allAttemptsLoaded: false
         }
     },
     methods: {
@@ -127,17 +128,22 @@ export default {
                 console.log(e)
             }
         },
-        getAllResultsFromServer: async function () {
+        getResultsFromServer: async function () {
 
             const formData = new FormData();
             formData.set('username', localStorage.getItem('username'))
             formData.set('password', localStorage.getItem('password'))
+            formData.set('skip', this.allTableRows.length)
 
             try{
                 const getPointsResponse = await request.post(`${api}/points/get`)
                 .send(formData);
 
                 const points = getPointsResponse.body;
+
+                if(points.length < 1){
+                    this.allAttemptsLoaded = true;
+                }
 
                 points.forEach(attempt => {
                     attempt.result = attempt.result == "true";
