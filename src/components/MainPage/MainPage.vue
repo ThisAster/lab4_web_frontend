@@ -22,6 +22,7 @@ import {api} from "@/api";
 
 export default {
     mounted() {
+        this.validateAuth();
         this.getResultsFromServer();
     },
     components: {
@@ -38,6 +39,12 @@ export default {
         goToLogin: function () {
             this.$router.push({name: 'login'});
             localStorage.removeItem("token");
+            localStorage.clear();
+        },
+        validateAuth: function () {
+            if (!localStorage.getItem('username') || !localStorage.getItem('password')) {
+                this.$router.push({name: 'login'});
+            }
         },
         changeCurR: function (r) {
             this.curR = Number(r);
