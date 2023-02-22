@@ -44,6 +44,9 @@ export default {
         validateAuth: function () {
             if (!localStorage.getItem('username') || !localStorage.getItem('password')) {
                 this.$router.push({name: 'login'});
+                setTimeout(() => {
+                    alert("Вы не вошли в систему!")
+                }, 1);
             }
         },
         changeCurR: function (r) {
