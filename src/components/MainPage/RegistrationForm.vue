@@ -43,11 +43,12 @@ export default {
   },
   methods: {
     async userFormSubmit() {
-      if(!this.username){
+      const validOnSpaces = /\s/;
+      if(this.username == '' || this.username.trim() == '' || this.username === null || validOnSpaces.test(this.username)){
         alert('Введите логин!')
         return;
       }
-      if(!this.password){
+      if(this.password == '' || this.password.trim() == '' || validOnSpaces.test(this.password) || this.password === null){
         alert('Введите пароль!')
         return
       }
