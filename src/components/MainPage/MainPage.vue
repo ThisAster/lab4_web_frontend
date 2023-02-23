@@ -38,7 +38,6 @@ export default {
     methods: {
         goToLogin: function () {
             this.$router.push({name: 'login'});
-            localStorage.removeItem("token");
             localStorage.clear();
         },
         validateAuth: function () {
@@ -211,4 +210,5 @@ export default {
             flex-direction: column;
         }
     }
+
 </style>
