@@ -78,6 +78,7 @@ export default {
     justify-content: center;
     align-items: center;
   }
+
   #form{
     display: flex;
     flex-direction: column;
@@ -87,7 +88,7 @@ export default {
     padding: 50px;
     background-color: #f5f5f599;
     align-items: center;
-    max-width: 480px;
+    max-width: 242px;
   }
   .control{
     width: 300px;
@@ -99,4 +100,5 @@ export default {
   .submit{
     min-width: 100px;
   }
+
 </style>

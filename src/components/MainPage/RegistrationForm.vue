@@ -2,18 +2,18 @@
   <div class="container">
     <form id="form" @submit.prevent>
         <div class="control">
-          <label>Логин </label> 
-          <InputText v-model="username" placeholder="Введите логин"></InputText>
+          <label class="regLogin">Логин: </label> 
+          <InputText v-model="username" placeholder="Введите логин" style="margin-right: 9px;"></InputText>
         </div>
 
         <div class="control">
-          <label>Пароль </label> 
-          <InputText v-model="password" type="password" placeholder="Введите пароль"></InputText>
+          <label class="regPassword">Пароль: </label> 
+          <InputText v-model="password" type="password" placeholder="Введите пароль" style="margin-right: 9px;"></InputText>
         </div>
 
         <div class="control">
-          <label>Подтвердите пароль </label> 
-          <InputText v-model="passwordAgain" type="password" placeholder="Введите пароль"></InputText>
+          <label сlass="regConfirmPassword" style="margin-right: 69px;">Повторите пароль: </label>
+          <InputText class="regInputPassword" v-model="passwordAgain" type="password" placeholder="Введите пароль" style="margin-right: 9px;"></InputText>
         </div>
 
         <div class="buttons">
@@ -105,19 +105,23 @@ export default {
     padding: 50px;
     background-color: #f5f5f599;
     align-items: center;
-    max-width: 580px;
+    max-width: 250px;
   }
-
-
-  .control {
-    min-width: 380px;
-    display: flex;
-    gap: 10px;
-    justify-content: space-between;
-    align-items: center;
-  }
-
   .submit {
     min-width: 100px;
   }
+
+  .regPassword {
+    margin-right: 149px;
+    margin-bottom: 46px;
+  }
+
+  input[data-v-ce029768] {
+    margin-right: 40px;
+  }
+
+  .regLogin {
+    margin-right: 160px;
+  }
+
 </style>

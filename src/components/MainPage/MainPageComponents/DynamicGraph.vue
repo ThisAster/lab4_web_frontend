@@ -1,6 +1,6 @@
 <template>
     <div class="svg-wrapper">
-        <canvas id="graph" width="415" height="415" @click="onClick">
+        <canvas id="graph" width="340" height="340" @click="onClick">
             <img ref="curImg" :src="selectedUrl" alt="Task grpah" width="400" height="400"/>
         </canvas>
     </div>
@@ -10,8 +10,8 @@
 import $ from "jquery";
 
 
-const width = 415;
-const height = 415;
+const width = 340;
+const height = 340;
 
 function drawGraph(attempts, ctx, maxR) {
     console.log(attempts)
@@ -156,6 +156,7 @@ export default {
 
 #graph{
     border-radius: 12px;
+    margin-top: 9px;
 }
 
 </style>
