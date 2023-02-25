@@ -198,10 +198,9 @@ export default {
 
 <style>
     .main{
-        display: flex;
         gap: 50px;
         flex-wrap: wrap;
-        padding: 50px;
+        padding:3px;
     }
 
 

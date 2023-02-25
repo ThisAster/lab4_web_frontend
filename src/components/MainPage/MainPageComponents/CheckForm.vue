@@ -169,6 +169,14 @@ export default {
     display: flex;
   }
 }
+
+@media screen and (max-width: 980px) {
+    .error_message[data-v-ee907bfc] {
+        bottom: 90px;
+        width: 209px;
+        left: 146px;
+    }
+}
 .form_holder {
     text-align: center;
     margin-left: auto;
